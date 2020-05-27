@@ -8,7 +8,6 @@ header.header
       a.nav__el.nav__el--logout Log out
       a.nav__el(href='/me')
           img.nav__user-img(src=`/img/users/${user.photo}`)
-          if user.name
             const userName = user.name.split(' ');
             span= `${userName[userName.length - 2]} ${userName[userName.length - 1]}`
     else
