@@ -65,6 +65,8 @@ exports.deleteApartment = factory.deleteOne(Apartment);
 
 exports.getApartmentsWithin = catchAsync(async (req, res, next) => {
   const { distance, latlng, unit } = req.params;
+  if (latlng) next(new AppError('Please provide latitude and longitude!', 400));
+
   const [lat, lng] = latlng.split(',');
 
   const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1;
@@ -88,6 +90,8 @@ exports.getApartmentsWithin = catchAsync(async (req, res, next) => {
 
 exports.getDistances = catchAsync(async (req, res, next) => {
   const { latlng, unit } = req.params;
+  if (latlng) next(new AppError('Please provide latitude and longitude!', 400));
+
   const [lat, lng] = latlng.split(',');
 
   const multiplier = unit === 'mi' ? 0.000621371 : 0.001;
