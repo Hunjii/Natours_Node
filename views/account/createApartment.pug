@@ -1,0 +1,91 @@
+extends baseAccount
+
+block content_account
+  form#form-create(data-user-id=`${user.id}`)
+    .user-view__form-container(style='padding: 0')
+      h2.heading-secondary.ma-bt-md Tổng quan
+      .form.form-user-data
+        .form__group
+          label.form__label(for='name') Tên căn hộ
+          input#name.form__input(type='text', required, name='name')
+        .form__group
+          label.form__label(for='summary') Mô tả ngắn
+          input#summary.form__input(type='text', required, name='summary')
+        .form__group
+          label.form__label(for='description') Mô tả 
+          textarea#description.form__input(rows="10", name='description')
+        .form__group
+          label.form__label(for='rules') Lưu ý đặc biệt
+          textarea#rules.form__input(rows="5", name='rules', required)
+    .line &nbsp;
+    .user-view__form-container(style='padding: 0')
+      h2.heading-secondary.ma-bt-md Thông tin cơ bản
+      .form.form-user-data
+        .form-flex(style='display: flex; justify-content: space-between;')
+          .form__group( style='width: 45%;')
+            label.form__label(for='typeAparment') Loại căn hộ
+            select#typeAparment.form__input
+              option(value="Căn hộ") Căn hộ
+              option(value="Biệt thự") Biệt thự
+              option(value="Studio") Studio
+              option(value="Nhà riêng") Nhà riêng
+          .form__group( style='width: 45%;')
+            label.form__label(for='typeRoom') Loại phòng
+            select#typeRoom.form__input
+              option(value="Nguyên căn") Nguyên căn
+              option(value="Phòng riêng") Phòng riêng
+        .form-flex(style='display: flex; justify-content: space-between;')
+          .form__group( style='width: 45%;')
+            label.form__label(for='guestNumber') Số khách tối đa
+            input#guestNumber.form__input(name="guestNumber", required, type='text')
+          .form__group( style='width: 45%;')
+            label.form__label(for='area') Diện tích căn hộ
+            input#area.form__input(name="area", required, type='Number', min = 1)
+        .form-flex(style='display: flex; justify-content: space-between;')
+          .form__group( style='width: 30%;')
+            label.form__label(for='bedroom') Phòng ngủ
+            input#bedroom.form__input(name="bedroom", type='Number', min=1, required)
+          .form__group( style='width: 30%;')
+            label.form__label(for='bathroom') Phòng tắm
+            input#bathroom.form__input(name="bathroom", type='Number', min=1, required)    
+          .form__group( style='width: 30%;')
+            label.form__label(for='bed') Giường
+            input#bed.form__input(name="bed", type='Number', min=1, required)    
+    .line &nbsp;
+    .user-view__form-container(style='padding: 0')
+      h2.heading-secondary.ma-bt-md Giá căn hộ
+      .form.form-user-data
+        form-flex(style='display: flex; justify-content: space-between;')
+          .form__group( style='width: 30%;')
+            label.form__label(for='priceCommon') Giá cơ bản
+            input#priceCommon.form__input(name="priceCommon", value='/đêm', type='Number', min=1, required)
+          .form__group( style='width: 30%;')
+            label.form__label(for='priceWeekend') Giá cuối tuần
+            input#priceWeekend.form__input(name="priceWeekend", value='/đêm', type='Number', min=1, required)    
+          .form__group( style='width: 30%;')
+            label.form__label(for='priceDiscount') Giá khuyến mãi dài hạn
+            input#priceDiscount.form__input(name="priceDiscount", value='/đêm', type='Number', min=1, required)    
+    .line &nbsp;
+    .user-view__form-container(style='padding: 0')
+      h2.heading-secondary.ma-bt-md Hình ảnh
+      .form.form-user-data
+        form-flex(style='display: flex; justify-content: space-between;')
+          .form__group.form__photo-upload( style='width: 45%;')
+            input#photo-cover.form__upload(type='file', accept='image/*', name='imageCover', required)
+            label(for="photo-cover") Ảnh bìa căn hộ   
+          .form__group.form__photo-upload( style='width: 45%;')
+            input#photos.form__upload(type='file', accept='image/*', name='images', required, multiple)
+            label(for="photos") Ảnh chi tiết căn hộ
+    .line &nbsp;
+    .user-view__form-container(style='padding: 0')
+      h2.heading-secondary.ma-bt-md Vị trí
+      .form.form-user-data
+        .form__group
+          label.form__label(for='location') Địa chỉ cơ bản
+          input#location.form__input(type='text', required, name='location')
+        .form__group.ma-bt-md
+          label.form__label(for='address') Địa chỉ chi tiết
+          input#address.form__input(type='text', required, name='address')
+        .line &nbsp;
+        .form__group
+          button.btn.btn--green Save

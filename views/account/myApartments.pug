@@ -1,0 +1,46 @@
+extends baseAccount
+
+block content_account
+  .card-wapper
+    a.btn.btn--green.btn--small(style='left: 83%; margin: -18px 0 20px 0; display: inline-flex; border: 3px solid #9f9f9f', href='/create-apartment') 
+      svg.card__icon(style='fill: #fff !important; margin-right: 5px')
+        use(xlink:href='img/icons.svg#icon-plus')
+      | Add New
+    .card-container
+      each apartment in apartments
+        .card
+          .card__header
+            .card__picture
+              .card__picture-overlay &nbsp;
+              img.card__picture-img(src=`img/apartments/${apartment.imageCover}`, alt=`${apartment.name}`)
+            h3.heading-tertirary
+              span= apartment.name
+
+          .card__details
+            h4.card__sub-heading= apartment.typeAparment
+            .card__data
+              svg.card__icon
+                use(xlink:href='img/icons.svg#icon-map-pin')
+              span= apartment.location.description
+            .card__data
+              svg.card__icon
+                use(xlink:href='img/icons.svg#icon-user')
+              span= `${apartment.guestNumber} khách`  
+            .card__data
+              svg.card__icon
+                use(xlink:href='img/icons.svg#icon-bed-room')
+              span= `${apartment.countRoom.bedroom} phòng`
+            .card__data
+              svg.card__icon
+                use(xlink:href='img/icons.svg#icon-bath-room')
+              span= `${apartment.countRoom.bathroom} phòng`
+
+          .card__footer
+            p
+              span.card__footer-value= new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'VND' }).format(apartment.price.priceCommon)
+              span.card__footer-text / đêm
+            p.card__ratings
+              span.card__footer-value= apartment.ratingsAverage
+              | 
+              span.card__footer-text= `rating (${apartment.ratingsQuantity})`
+            a.btn.btn--green.btn--small(href=`apartment/${apartment.slug}`) Chi tiết

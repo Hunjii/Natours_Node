@@ -1,0 +1,103 @@
+extends base
+
+block append head
+  script(src='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js')
+  link(href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet')
+
+mixin reviewCard(review)
+  .reviews__card
+    .reviews__avatar
+      img.reviews__avatar-img(src=`/img/users/${review.user.photo}`, alt='Jim Brown')
+      h6.reviews__user= review.user.name
+    p.reviews__text= review.review
+    .reviews__rating
+      each star in [1, 2, 3, 4, 5]
+        svg.reviews__star(class=`reviews__star--${review.rating >= star ? 'active' : 'inactive'}`)
+          use(xlink:href='/img/icons.svg#icon-star')
+
+mixin overviewBox(label, text, icon) 
+  .overview-box__detail
+    svg.overview-box__icon
+      use(xlink:href=`/img/icons.svg#icon-${icon}`)
+    if label !== ''
+      span.overview-box__label= label
+    span.overview-box__text= text
+
+block content
+  section.section-header
+    .header__hero
+      .header__hero-overlay &nbsp;
+      img.header__hero-img(src=`/img/apartments/${apartment.imageCover}`, alt=`${apartment.name}`)
+
+    .heading-box
+      h1.heading-primary
+        span= apartment.name
+      .heading-box__group
+        .heading-box__detail
+          svg.heading-box__icon
+            use(xlink:href='/img/icons.svg#icon-clock')
+          span.heading-box__text 10 days
+        .heading-box__detail
+          svg.heading-box__icon
+            use(xlink:href='/img/icons.svg#icon-map-pin')
+          span.heading-box__text= apartment.location.description
+
+  section.section-description
+    .overview-box
+      div
+        .overview-box__group
+          h2.heading-secondary.ma-bt-lg Quick facts
+          +overviewBox('Participants', `${apartment.guestNumber} khách`, 'calendar')
+          +overviewBox('Rating', `${apartment.ratingsAverage} / 5`, 'star')
+          +overviewBox(`${apartment.typeAparment}`, `${apartment.area} m²`, 'home')
+
+        .overview-box__group
+          h2.heading-secondary.ma-bt-lg Convenients
+          .overview__sub
+            - const convenients = [['tv', 'TV'], ['aircondition', 'Điều hòa'], ['wifi', 'Wifi'],['internet','Internet'],['elevator','Thang máy'],['washingmachine','Máy giặt'],['pool','Bể bơi'],['fridge','Tủ lạnh'],['balcony','Ban công']]
+            each convenient in convenients
+              if apartment.convenient[convenient[0]] 
+                +overviewBox('', `${convenient[1]}`, convenient[0])
+
+        .overview-box__group
+          h2.heading-secondary.ma-bt-lg Host
+          .overview-box__detail
+            img.overview-box__img(src=`/img/users/${apartment.host.photo}`, alt='Host photo')
+            span.overview-box__label Host :
+            span.overview-box__text= apartment.host.name
+
+    .description-box
+      h2.heading-secondary.ma-bt-lg About the park camper tour
+      p.description__text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      p.description__text Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum!
+
+  section.section-pictures
+    .picture-box
+      img.picture-box__img.picture-box__img--1(src=`/img/apartments/${apartment.images[0]}`, alt='The Park Camper Tour 1')
+    .picture-box
+      img.picture-box__img.picture-box__img--2(src=`/img/apartments/${apartment.images[1]}`, alt='The Park Camper Tour 1')
+    .picture-box
+      img.picture-box__img.picture-box__img--3(src=`/img/apartments/${apartment.images[2]}`, alt='The Park Camper Tour 1')
+    
+  section.section-map
+    #map(data-location=`${JSON.stringify(apartment.location)}`)
+
+  section.section-reviews
+    .reviews
+      each review in apartment.reviews
+        +reviewCard(review)
+
+
+  section.section-cta
+    .cta
+      .cta__img.cta__img--logo
+        img(src='/img/logo-white.png', alt='Natours logo')
+      img.cta__img.cta__img--1(src='/img/apartments/tour-5-2.jpg', alt='')
+      img.cta__img.cta__img--2(src='/img/apartments/tour-5-1.jpg', alt='')
+      .cta__content
+        h2.heading-secondary What are you waiting for?
+        p.cta__text 10 days. 1 adventure. Infinite memories. Make it yours today!
+        if user
+          button.btn.btn--green.span-all-rows#book-room(data-room-id=`${apartment.id}`) Book now!
+        else
+          a.btn.btn--green.span-all-rows(href="/login") Login to booking!

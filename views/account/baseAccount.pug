@@ -1,0 +1,39 @@
+extends ../base
+
+mixin navItem(link, text, icon, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`)
+      svg
+        use(xlink:href=`img/icons.svg#icon-${icon}`)
+      | #{text}
+      
+block content
+  main.main
+    .user-view
+      nav.user-view__menu
+        ul.side-nav
+          +navItem('/me','Settings','settings')
+          - if (user.role === 'user')
+            +navItem('/my-bookings','My bookings','briefcase')
+            +navItem('#','My reviews','star')
+            +navItem('#','Billing','credit-card')
+
+        - if(user.role === 'admin')
+          .admin-nav
+            h5.admin-nav__heading Admin
+            ul.side-nav
+              +navItem('#','Manage tours','map')
+              +navItem('#','Manage users','users')
+              +navItem('#','Manage reviews','star')
+              +navItem('#','Manage bookings','briefcase')
+
+        - if(user.role === 'host')
+          .admin-nav
+            h5.admin-nav__heading Host
+            ul.side-nav
+              +navItem('#','Statistical','bar-chart-2')
+              +navItem('/bookings','Manage bookings','edit')
+              +navItem('/my-apartments','Manage Apartments','home')
+
+      .user-view__content
+        block content_account

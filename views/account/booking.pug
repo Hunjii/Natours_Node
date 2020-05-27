@@ -1,0 +1,26 @@
+extends baseAccount
+
+block content_account
+  .table-container
+      ul.responsive-table
+        li.table-header
+          .col.col-1 Khách
+          .col.col-2 Đặt phòng và vị trí
+          .col.col-3 Ngày đặt
+          .col.col-4 Tình trạng
+          .col.col-5 Chi tiết
+        each booking in bookings
+          li.table-row
+            .col.col-1(data-label="Customer") 
+              img(src=`/img/users/${booking.user.photo}`)
+              .info
+                p= booking.user.name
+                p= booking.user.email
+            .col.col-2(data-label="Booking")
+              p(style='color: #2e9bd1; padding-right: 25px')= booking.apartment.name
+              p= booking.apartment.location.address
+            .col.col-3(data-label="Date")= booking.createdAt.toLocaleDateString('en-us', { weekday: "long", year: "numeric", month: "2-digit", day: "numeric"})
+            .col.col-4(data-label="Payment Status", style="color: #7ff824") 
+              b Pending
+            .col.col-5(data-label="Info")
+              b= `${new Intl.NumberFormat().format(booking.price)}₫`

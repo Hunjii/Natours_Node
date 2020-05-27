@@ -1,0 +1,61 @@
+extends base
+
+block content
+  main.main
+    .card-container
+      each apartment in apartments
+        .card
+          .card__header
+            .card__picture
+              .card__picture-overlay &nbsp;
+              img.card__picture-img(src=`img/apartments/${apartment.imageCover}`, alt=`${apartment.name}`)
+            h3.heading-tertirary
+              span= apartment.name
+
+          .card__details
+            h4.card__sub-heading= apartment.typeAparment
+            p.card__text= apartment.summary
+            .card__data
+              svg.card__icon
+                use(xlink:href='img/icons.svg#icon-map-pin')
+              span= apartment.location.description
+            .card__data
+              svg.card__icon
+                use(xlink:href='img/icons.svg#icon-user')
+              span= `${apartment.guestNumber} khách`  
+            .card__data
+              svg.card__icon
+                use(xlink:href='img/icons.svg#icon-bed-room')
+              span= `${apartment.countRoom.bedroom} phòng`
+            .card__data
+              svg.card__icon
+                use(xlink:href='img/icons.svg#icon-bath-room')
+              span= `${apartment.countRoom.bathroom} phòng`
+
+          .card__footer
+            p
+              span.card__footer-value= `${new Intl.NumberFormat().format(apartment.price.priceCommon)}₫`
+              span.card__footer-text / đêm
+            p.card__ratings
+              span.card__footer-value= apartment.ratingsAverage
+              | 
+              span.card__footer-text= `rating (${apartment.ratingsQuantity})`
+            - if(reviewArray)
+              - if(reviewArray.includes(apartment.id))
+                p(style="color: #7dd56f; font-size: 18px; font-style: italic;") Đã đánh giá!
+              - else
+                button.btn-review(data-apartment-id = `${apartment.id}`) Đánh giá ngay!
+            a.btn.btn--green.btn--small(href=`apartment/${apartment.slug}`) Chi tiết
+
+  .overlay
+  form.form.form--review
+    svg.overview-box__icon#svg-close(style='position: absolute; right: 5%; top: 3%; cursor: pointer; transition: all .2s linear;')
+      use(xlink:href='/img/icons.svg#icon-x-circle')
+    .form__group
+      label.form__label(for='text') Nhận xét
+      input#review.form__input(type='text', placeholder='bình luận', required)
+    .form__group.ma-bt-md
+      label.form__label(for='number') Đánh giá
+      input#rating.form__input(type='number', step="0.01", min="1", max="5", placeholder='0', required)
+    .form__group
+      button.btn.btn--green#btn-create-review Gửi đánh giá
